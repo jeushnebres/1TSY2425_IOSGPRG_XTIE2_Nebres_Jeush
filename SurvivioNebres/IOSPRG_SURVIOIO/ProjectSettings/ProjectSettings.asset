@@ -157,7 +157,8 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Android: com.DefaultCompany.IOSPRG_SURVIOIO
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -780,8 +781,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: IOSPRG_SURVIOIO
-  metroPackageVersion: 
+  metroPackageName: IOSPRGSURVIOIO
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -789,7 +790,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: IOSPRG_SURVIOIO
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: IOSPRG_SURVIOIO
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
