@@ -5,6 +5,7 @@ using UnityEngine;
 public class AmmoPickup : MonoBehaviour
 {
     [SerializeField] private AmmoType ammoType;
+    [SerializeField] private GameObject weaponPrefab; // Reference to the weapon prefab
 
     public enum AmmoType
     {
@@ -18,12 +19,19 @@ public class AmmoPickup : MonoBehaviour
         // Check if the player collided with the ammo
         if (collision.CompareTag("Player"))
         {
-            // Notify the player about the ammo pickup
             PlayerAmmo playerAmmo = collision.GetComponent<PlayerAmmo>();
             if (playerAmmo != null)
             {
                 int ammoAmount = GetAmmoAmount(ammoType); // Get the amount based on ammo type
                 playerAmmo.AddAmmo(ammoType, ammoAmount); // Add ammo to the player's inventory
+
+                // Notify the WeaponManager to equip the weapon
+                WeaponManager weaponManager = collision.GetComponent<WeaponManager>();
+                if (weaponManager != null && weaponPrefab != null)
+                {
+                    weaponManager.PickupWeapon(weaponPrefab); // Equip the weapon
+                }
+
                 Destroy(gameObject); // Destroy the ammo pickup object
             }
         }

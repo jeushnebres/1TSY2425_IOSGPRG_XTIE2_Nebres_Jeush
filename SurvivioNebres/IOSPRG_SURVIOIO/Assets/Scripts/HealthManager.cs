@@ -5,33 +5,30 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-
     public Image healthBar;
-    public float healthAmount = 100f;
-    // Start is called before the first frame update
+    public Player player; 
+
     void Start()
     {
-        
+        if (player != null)
+        {
+            UpdateHealthBar(); 
+        } // Added closing brace for Start method
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-        if(healthAmount <= 0 )
+        if (player.GetCurrentHealth() <= 0)
         {
             Application.LoadLevel(Application.loadedLevel);
         }
-        if(Input.GetKeyDown(KeyCode.Return))
-        {
-            TakeDamage(20);
-        }
     }
 
-    public void TakeDamage(float damage)
+    public void UpdateHealthBar() 
     {
-        healthAmount -= damage;
-        healthBar.fillAmount = healthAmount / 100f;
-
+        if (player != null) 
+        {
+            healthBar.fillAmount = player.GetCurrentHealth() / player.GetMaxHealth();
+        }
     }
 }
