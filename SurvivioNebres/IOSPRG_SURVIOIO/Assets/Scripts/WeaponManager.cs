@@ -18,7 +18,7 @@ public class WeaponManager : MonoBehaviour
         playerAmmo = GetComponent<PlayerAmmo>();
         currentWeapon = pistolPrefab; // Start with the pistol prefab
 
-        // Add listener to the fire button
+       
         fireButton.onClick.AddListener(Shoot);
     }
 
@@ -34,15 +34,19 @@ public class WeaponManager : MonoBehaviour
     }
 
     public void Shoot()
+{
+    if (currentWeapon != null) // Check if currentWeapon is not null
     {
-        if (currentWeapon != null) // Check if currentWeapon is not null
+        Weapon weaponComponent = currentWeapon.GetComponent<Weapon>();
+        if (weaponComponent != null && playerAmmo.GetCurrentAmmo(weaponComponent.ammoType) > 0)
         {
-            Weapon weaponComponent = currentWeapon.GetComponent<Weapon>();
-            if (weaponComponent != null && playerAmmo.GetCurrentAmmo(weaponComponent.ammoType) > 0)
-            {
-                weaponComponent.Fire();
-                playerAmmo.AddAmmo(weaponComponent.ammoType, -1); // Decrease ammo by 1
-            }
+            weaponComponent.Fire(); // Call the Fire method on the weapon
+            playerAmmo.AddAmmo(weaponComponent.ammoType, -1); // Decrease ammo by 1
+        }
+        else
+        {
+            Debug.Log("Out of ammo for this weapon!");
         }
     }
+}
 }

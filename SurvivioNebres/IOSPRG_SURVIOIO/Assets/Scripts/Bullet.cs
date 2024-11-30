@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10f; // Speed of the bullet
-    public int damage = 20; // Damage dealt by the bullet
-    private Transform target; // The target the bullet will move towards
+    public float speed = 10f; 
+    public int damage = 10;
+    private Transform target; 
 
     void Update()
     {
@@ -34,8 +34,8 @@ public class Bullet : MonoBehaviour
 
     private void HitTarget()
     {
-        // Handle hitting the target (e.g., apply damage)
-        Unit targetUnit = target.GetComponent<Unit>(); // Assuming the target has a Unit component
+       
+        Unit targetUnit = target.GetComponent<Unit>();
         if (targetUnit != null)
         {
             targetUnit.TakeDamage(damage); // Apply damage to the target
@@ -47,18 +47,25 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Handle collision with players or enemies
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Enemy"))
+         if (collision.gameObject.CompareTag("Enemy"))
+    {
+        Unit targetUnit = collision.GetComponent<Unit>(); 
+        if (targetUnit != null)
         {
-            // If the bullet hits a player or enemy, apply damage
-            Unit targetUnit = collision.GetComponent<Unit>(); // Assuming both Player and Enemy have a Unit component
-            if (targetUnit != null)
-            {
-                targetUnit.TakeDamage(damage); // Apply damage to the target
-            }
-
-            // Destroy the bullet after hitting the target
-            Destroy(gameObject);
+            targetUnit.TakeDamage(damage); // Apply damage to the enemy
         }
+
+        Destroy(gameObject); // Destroy the bullet after hitting the target
+    }
+        if (collision.gameObject.CompareTag("Player"))
+    {
+        Unit targetUnit = collision.GetComponent<Unit>(); 
+        if (targetUnit != null)
+        {
+            targetUnit.TakeDamage(damage); // Apply damage to the player
+        }
+
+        Destroy(gameObject); // Destroy the bullet after hitting the target
+    }
     }
 }

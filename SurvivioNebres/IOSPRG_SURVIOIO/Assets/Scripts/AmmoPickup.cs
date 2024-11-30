@@ -15,28 +15,18 @@ public class AmmoPickup : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
+{
+    if (collision.CompareTag("Player"))
     {
-        // Check if the player collided with the ammo
-        if (collision.CompareTag("Player"))
+        PlayerAmmo playerAmmo = collision.GetComponent<PlayerAmmo>();
+        if (playerAmmo != null)
         {
-            PlayerAmmo playerAmmo = collision.GetComponent<PlayerAmmo>();
-            if (playerAmmo != null)
-            {
-                int ammoAmount = GetAmmoAmount(ammoType); // Get the amount based on ammo type
-                playerAmmo.AddAmmo(ammoType, ammoAmount); // Add ammo to the player's inventory
-
-                // Notify the WeaponManager to equip the weapon
-                WeaponManager weaponManager = collision.GetComponent<WeaponManager>();
-                if (weaponManager != null && weaponPrefab != null)
-                {
-                    weaponManager.PickupWeapon(weaponPrefab); // Equip the weapon
-                }
-
-                Destroy(gameObject); // Destroy the ammo pickup object
-            }
+            int ammoAmount = GetAmmoAmount(ammoType); // Get the amount based on ammo type
+            playerAmmo.AddAmmo(ammoType, ammoAmount); // Add ammo to the player's inventory
+            Destroy(gameObject); // Destroy the ammo pickup object
         }
     }
-
+}
     private int GetAmmoAmount(AmmoType type)
     {
         switch (type)

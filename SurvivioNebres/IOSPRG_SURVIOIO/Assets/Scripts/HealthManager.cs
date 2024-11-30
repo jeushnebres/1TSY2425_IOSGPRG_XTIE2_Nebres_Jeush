@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
@@ -13,22 +14,26 @@ public class HealthManager : MonoBehaviour
         if (player != null)
         {
             UpdateHealthBar(); 
-        } // Added closing brace for Start method
+        } 
     }
 
-    void Update()
+     void Update()
     {
         if (player.GetCurrentHealth() <= 0)
         {
-            Application.LoadLevel(Application.loadedLevel);
+            SceneManager.LoadScene("GameOver"); 
         }
     }
 
-    public void UpdateHealthBar() 
+     public void UpdateHealthBar() 
     {
         if (player != null) 
         {
-            healthBar.fillAmount = player.GetCurrentHealth() / player.GetMaxHealth();
+            float healthPercentage = (float)player.GetCurrentHealth() / player.GetMaxHealth(); // Calculate health percentage
+            healthBar.fillAmount = healthPercentage; // Update health bar fill amount
+
+            // Change color based on health percentage
+            healthBar.color = Color.Lerp(Color.red, Color.green, healthPercentage);
         }
     }
 }

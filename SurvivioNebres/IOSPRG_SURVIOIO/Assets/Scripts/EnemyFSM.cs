@@ -92,41 +92,53 @@ public class EnemyFSM : MonoBehaviour
     }
 
     void ChaseUpdate() 
+{
+    if (Target == null)
     {
-        if (Target == null)
-        {
-            ChangeState(previousState);
-            return;
-        }
-
-        RotateTowards(Target.position);
-
-        float step = chaseSpeed * Time.deltaTime;
-        this.transform.position = Vector3.MoveTowards(this.transform.position, Target.position, step);
-
-        // Check if within chase distance
-        if (Vector3.Distance(transform.position, Target.position) <= chaseDist)
-        {
-            ChangeState(State.Attack); 
-        }
+        ChangeState(previousState);
+        return;
     }
-    
-    void AttackUpdate()
+
+    RotateTowards(Target.position);
+
+    float step = chaseSpeed * Time.deltaTime;
+    this.transform.position = Vector3.MoveTowards(this.transform.position, Target.position, step);
+
+    // Check if within chase distance
+    if (Vector3.Distance(transform.position, Target.position) <= chaseDist)
     {
-        if (Target == null)
-        {
-            ChangeState(previousState);
-            return;
-        }
-
-        RotateTowards(Target.position);
-
-        if (Time.time >= lastShotTime + shootingCooldown)
-        {
-            Shoot();
-            lastShotTime = Time.time; 
-        }
+        ChangeState(State.Attack); 
     }
+    else
+    {
+        
+        ChangeState(State.Idle); 
+    }
+}
+
+void AttackUpdate()
+{
+    if (Target == null)
+    {
+        ChangeState(previousState);
+        return;
+    }
+
+    RotateTowards(Target.position);
+
+    if (Vector3.Distance(transform.position, Target.position) > chaseDist)
+    {
+        // If the target moves out of attack range, go back to Idle or Move state
+        ChangeState(State.Move); 
+        return;
+    }
+
+    if (Time.time >= lastShotTime + shootingCooldown)
+    {
+        Shoot();
+        lastShotTime = Time.time; 
+    }
+}
 
     void Shoot()
     {
@@ -162,6 +174,5 @@ public class EnemyFSM : MonoBehaviour
 
         previousState = currentState;
         currentState = state;
-        Debug.Log("Change state: " + currentState);
     }
 }
